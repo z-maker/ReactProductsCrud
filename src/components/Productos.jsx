@@ -38,7 +38,7 @@ const Productos = props => {
                <tbody>
                     {productos.length === 0 ? 'No hay productos' : (
                         productos.map(producto => (
-                            <Producto producto={producto} />
+                            <Producto key={producto.id} producto={producto} />
                         ))
                     )}
                </tbody>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const AxiosClent = axios.create({
-    baseURL: 'http://localhost:4000/'
+    baseURL: 'https://my-json-server.typicode.com/z-maker/ReactProductsCrud/'
 })
 
 export default AxiosClent
