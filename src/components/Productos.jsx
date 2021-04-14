@@ -10,7 +10,6 @@ const Productos = props => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        
         const cargarProductos = () => dispatch( obtenerProductosAction() )
         cargarProductos()
         
@@ -18,14 +17,27 @@ const Productos = props => {
 
     //obtener state
     const productos = useSelector(state => state.productos.productos)
-
+    const error = useSelector(state => state.productos.error)
+    const loading = useSelector(state => state.productos.loading)
 
 
 
     return (
         <Fragment>
            <h2 className="text-center my-5">Listado de Productos</h2>
- 
+
+            {
+                error && 
+                <p className="font-weight-bold alert alert-danger text-center">
+                    Some was wrong
+                </p>
+            }
+
+            { loading && 
+                <p className="text-center">
+                    Loading...
+                </p>
+            }
 
            <table className="table table-striped">
                <thead className="bg-primary table-dark">

@@ -4,7 +4,14 @@ import {
     AGREGAR_PRODUCTO_ERROR,
     COMENZAR_DESCARGA_PRODUCTOS,
     DESCARGA_PRODUCTOS_EXITO,
-    DESCARGA_PRODUCTOS_ERROR
+    DESCARGA_PRODUCTOS_ERROR,
+    PRODUCTO_ELIMINADO_ERROR,
+    PRODUCTO_ELIMINADO_EXITO,
+    OBTENER_PRODUCTO_ELIMINAR,
+    OBTENER_PRODUCTO_EDITAR,
+    COMENZAR_EDICION,
+    PRODUCTO_EDITADO_ERROR,
+    PRODUCTO_EDITADO_EXITO
 } from '../types'
 
 import AxiosClent from '../config/axios'
@@ -86,5 +93,77 @@ const descargarProductosExitosa = productos => ({
 
 const descargarProductosError = () => ({
     type: DESCARGA_PRODUCTOS_ERROR,
+    payload: true
+})
+
+export function borrarProductoAction(id){
+    return async (dispatch) => {
+        dispatch(obtenerProductoEliminar(id))
+
+        try {
+            await AxiosClent.delete(`/productos/${id}`)
+            dispatch(eliminarProductoExito())
+            Swal.fire(
+                "Deleted!",
+                "Your product has been pulverized",
+                "success"
+            )
+        } catch (error) {
+            dispatch(eliminarProductoError())
+        }
+    }
+}
+
+const obtenerProductoEliminar = id => ({
+    type: OBTENER_PRODUCTO_ELIMINAR,
+    payload: id
+})
+
+const eliminarProductoExito = () => ({
+    type: PRODUCTO_ELIMINADO_EXITO,
+})
+
+const eliminarProductoError = () => ({
+    type: PRODUCTO_ELIMINADO_ERROR,
+    payload: true
+})
+
+
+export function setProductToEditAction (product){
+    return async (dispatch) => {
+        dispatch(setProductToEdit(product))
+    }
+}
+
+const setProductToEdit = product => ({
+    type:OBTENER_PRODUCTO_EDITAR,
+    payload:product
+})
+
+
+export function editProductAction(product){
+    return async (dispatch) => {
+        dispatch(editProduct())
+
+        try {
+            const res = await AxiosClent.put(`/productos/${product.id}`, product)
+            dispatch(ProductoEditadoExito(res.data))
+        } catch (error) {
+            dispatch(ProductoEditadoError())
+        }
+    }
+}
+
+const editProduct = () => ({
+    type: COMENZAR_EDICION,
+})
+
+const ProductoEditadoExito = (producto) => ({
+    type: PRODUCTO_EDITADO_EXITO,
+    payload:producto
+})
+
+const ProductoEditadoError = () => ({
+    type: PRODUCTO_EDITADO_ERROR,
     payload: true
 })
